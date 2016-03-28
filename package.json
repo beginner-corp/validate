@@ -1,0 +1,22 @@
+{
+  "name": "validate-params",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/**-test.js | tap-spec"
+  },
+  "keywords": [],
+  "author": "Brian LeRoux",
+  "license": "Apache-2",
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.5.1"
+  },
+  "devDependencies": {
+    "lodash": "^4.6.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.5.1"
+  }
+}
