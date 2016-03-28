@@ -1,11 +1,18 @@
 {
   "name": "validate-params-schema",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "scripts": {
     "test": "tape test/**-test.js | tap-spec"
   },
-  "keywords": ["params", "validate", "schema", "json", "validations", "contract"],
+  "keywords": [
+    "params",
+    "validate",
+    "schema",
+    "json",
+    "validations",
+    "contract"
+  ],
   "author": "Brian LeRoux",
   "license": "Apache-2",
   "dependencies": {
