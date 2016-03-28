@@ -1,26 +1,36 @@
-var _ = require('lodash')
+var isObject  = require('lodash.isobject')
+var isString  = require('lodash.isstring')
+var isNumber  = require('lodash.isnumber')
+var isArray   = require('lodash.isarray')
+var isBoolean = require('lodash.isboolean')
+var isError   = require('lodash.iserror')
+var has       = require('lodash.has')
+var property  = require('lodash.property')
+var aliases   = 'obj str num arr bool'.split(' ')
+var builtins  = [Object, String, Number, Array, Boolean]
+var rangesafe = [String, Number, Array]
 
 // built in types (thus all of JSON!)
 var types = { 
 
-  obj(v) {
-    return _.isObject(v)? true : TypeError('not an object')
+  obj: function obj(v) {
+    return isObject(v)? true : TypeError('not an object')
   },
 
-  str(v) {
-    return _.isString(v)? true : TypeError('not a string')
+  str: function str(v) {
+    return isString(v)? true : TypeError('not a string')
   },
 
-  num(v) {
-    return _.isNumber(v)? true : TypeError('not a number')
+  num: function num(v) {
+    return isNumber(v)? true : TypeError('not a number')
   },
 
-  arr(v) {
-    return _.isArray(v)? true : TypeError('not an array')
+  arr: function arr(v) {
+    return isArray(v)? true : TypeError('not an array')
   },
 
-  bool(v) {
-    return _.isBoolean(v)? true : TypeError('not a boolean')
+  bool: function bool(v) {
+    return isBoolean(v)? true : TypeError('not a boolean')
   }
 }
 
@@ -30,13 +40,15 @@ var types = {
 // - requires params and a schema
 // - returns either an array of errors or false
 //
-function validate(params, schema) {
+module.exports = function validate(params, schema) {
 
-  if (!_.isObject(params)) {
+  // spectactular fail for programmer error
+  if (!isObject(params)) {
     throw Error('validate(params, schema): params not an object')
   }
 
-  if (!_.isObject(schema)) {
+  // spectactular fail for programmer error
+  if (!isObject(schema)) {
     throw Error('validate(params, schema): schema not an object')
   }
 
@@ -50,76 +62,74 @@ function validate(params, schema) {
     var prop = schema[k]
 
     // test for required properties
-    if (prop.required && !_.has(params, k)) {
+    if (prop.required && !has(params, k)) {
       errors.push(ReferenceError('missing required param ' + k))
     }
 
     // type checker! only validating a type if params has the key
-    if (prop.type && _.has(params, k)) {
+    if (prop.type && has(params, k)) {
       // do a bunch of work to find a possible err
-      var aliases  = 'obj str num arr bool'.split(' ')
-      var builtins = [Object, String, Number, Array, Boolean]
       var index    = builtins.indexOf(prop.type)
       var notfound = index === -1
       var checker  = notfound? prop.type : types[aliases[index]]
-      var value    = _.property(k)(params)
+      var value    = property(k)(params)
       var err      = checker(value)
       // finally check the type
-      if (_.isError(err)) {
+      if (isError(err)) {
         errors.push(TypeError('invalid type ' + k + ' is ' + err.message))
       }
     }
 
-    // test for min and max
-    var rangesafe = [String, Number, Array]
-    // figure out min/max for custom types
+    // add custom type to rangesafe if min or max is expected
     if (notfound && (prop.type.min || prop.type.max)) {
       rangesafe.push(prop.type)
     }
 
     // min
-    if (prop.min && _.has(params, k) && rangesafe.indexOf(prop.type) > -1) {
-      var value = _.property(k)(params)
-      var isNumAndUnderMin = _.isNumber(value) && value < prop.min
+    if (prop.min && has(params, k) && rangesafe.indexOf(prop.type) > -1) {
+
       // number we check the value directly
+      var isNumAndUnderMin = isNumber(value) && value < prop.min
       if (isNumAndUnderMin) {
         errors.push(RangeError('below min ' + k + ' is ' + value + ' (min is ' + prop.min + ')'))
       }
+
       // string and array both respond to length!
-      var lengthUnderMin = (_.isString(value) || _.isArray(value)) && value.length < prop.min
+      var lengthUnderMin = (isString(value) || isArray(value)) && value.length < prop.min
       if (lengthUnderMin) {
         errors.push(RangeError('below min ' + k + ' is ' + value.length + '(min is ' + prop.min + ')'))
       }
+
       // custom min found on a valid custom type
-      var isCustom = prop.type.min && !_.isError(prop.type(value)) && !prop.type.min(prop.min, value)
+      var isCustom = prop.type.min && !isError(prop.type(value)) && !prop.type.min(prop.min, value)
       if (isCustom) {
         errors.push(RangeError('below min ' + k + ' is ' + value + ' (min is ' + prop.min + ')'))
       }
     }
 
     // max
-    if (prop.max && _.has(params, k) && rangesafe.indexOf(prop.type) > -1) {
-      var value = _.property(k)(params)
+    if (prop.max && has(params, k) && rangesafe.indexOf(prop.type) > -1) {
+
       // number we check the value directly
-      var isNumAndOverMax = _.isNumber(value) && value > prop.max
+      var isNumAndOverMax = isNumber(value) && value > prop.max
       if (isNumAndOverMax) {
         errors.push(RangeError('over max ' + k + ' is ' + value + ' (max is ' + prop.max + ')'))
       }
+
       // string and array both respond to length!
-      var lengthOverMax = (_.isString(value) || _.isArray(value)) && value.length < prop.max
+      var lengthOverMax = (isString(value) || isArray(value)) && value.length < prop.max
       if (lengthOverMax) {
         errors.push(RangeError('over max ' + k + ' is ' + value.length + '(max is ' + prop.max + ')'))
       }
+
       // custom min found on a valid custom type
-      var isCustom = prop.type.max && !_.isError(prop.type(value)) && !prop.type.max(prop.max, value)
+      var isCustom = prop.type.max && !isError(prop.type(value)) && !prop.type.max(prop.max, value)
       if (isCustom) {
         errors.push(RangeError('over max ' + k + ' is ' + value + ' (max is ' + prop.max + ')'))
       }
     }
   })
  
+  // friendly return (empty arrays being truthy leads to fugly err first handling)
   return errors.length? errors : false
-///
 }
-
-module.exports = validate
