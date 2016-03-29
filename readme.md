@@ -1,9 +1,9 @@
-# validate-params-schema
+# @smallwins/validate
 
 Parameter validation for builtins and custom types. Accepts `params` and a `schema` and returns an array of `Error`s or `false`.
 
 ```javascript
-var validate = require('validate-params-schema')
+var validate = require('@smallwins/validate')
 
 function hi(params, callback) {
   var schema = {
@@ -38,18 +38,22 @@ hi({name:{}}, console.log)
 
 ### things it does not do
 
-- mutate things with: serialization, formatting or defaults
-- nested subtypes (eg. the things in an array)
-- localized error messages
+- Mutate things with: serialization, formatting or defaults
+- Nested subtypes (eg. the things in an array)
+- Localized error messages
 
 ## further justifications
 
-There are a tonne of libraries that do things like this but also do a whole lot more. This library deliberately limits its scope: make errback style param contract validation super clean and simple. Work primarily with builtins but easily extend. Provide a nice API for usage (hence returning false instead of a truthy empty array for the return value of validate).
+There are a tonne of libraries that do things like this but also do a whole lot more. This library deliberately limits its scope: 
 
-## example usage
+- Make errback style param contract validation super clean and simple
+- Work primarily with builtins but easily extend
+- Provide a nice API for usage (hence returning false instead of a truthy empty array for the return value of validate)
+
+## another example usage
 
 ```javascript
-var validate = require('validate-params-schema')
+var validate = require('@smallwins/validate')
 
 functon sum(params, callback) {
   // define our assumed params
@@ -81,4 +85,4 @@ functon sum(params, callback) {
 - `min` any `Number` (or anything allowed by a custom type)
 - `max` any `Number` (or anything allowed by a custom type)
 
-Check out `./examples` for more on custom types and ranges (and the tests).
+Check out the [examples](https://github.com/smallwins/validate-params-schema/tree/master/examples) for more on custom types and ranges (and the tests).
