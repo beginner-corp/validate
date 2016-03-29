@@ -1,3 +1,5 @@
+[ ![Codeship Status for smallwins/validate](https://codeship.com/projects/e0e990b0-d826-0133-2fa3-6a1daaefbd5c/status?branch=master)](https://codeship.com/projects/143153)
+
 # @smallwins/validate
 
 Parameter validation for builtins and custom types. Accepts `params` and a `schema` and returns an array of `Error`s or `false`.
