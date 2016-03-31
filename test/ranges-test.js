@@ -24,3 +24,11 @@ test('custom easter must be 2016', t=> {
     console.log(err)
   })
 })
+
+test('custom easter must be 2016', t=> {
+  t.plan(1)
+  ranges({easter:'2016/03/25-2017/03/28'}, (err, results)=> {
+    t.equal(err.length, 1, 'only 2016 easter!')
+    console.log(err)
+  })
+})

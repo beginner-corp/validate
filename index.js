@@ -1,14 +1,16 @@
-var isObject  = require('lodash.isobject')
-var isString  = require('lodash.isstring')
-var isNumber  = require('lodash.isnumber')
-var isArray   = require('lodash.isarray')
-var isBoolean = require('lodash.isboolean')
-var isError   = require('lodash.iserror')
-var has       = require('lodash.has')
-var property  = require('lodash.property')
-var aliases   = 'obj str num arr bool'.split(' ')
-var builtins  = [Object, String, Number, Array, Boolean]
-var rangesafe = [String, Number, Array]
+var isObject    = require('lodash.isobject')
+var isString    = require('lodash.isstring')
+var isNumber    = require('lodash.isnumber')
+var isArray     = require('lodash.isarray')
+var isBoolean   = require('lodash.isboolean')
+var isError     = require('lodash.iserror')
+var isUndefined = require('lodash.isundefined')
+var isFunction  = require('lodash.isfunction')
+var has         = require('lodash.has')
+var property    = require('lodash.property')
+var aliases     = 'obj str num arr bool'.split(' ')
+var builtins    = [Object, String, Number, Array, Boolean]
+var rangesafe   = [String, Number, Array]
 
 // built in types (thus all of JSON!)
 var types = { 
@@ -40,16 +42,21 @@ var types = {
 // - requires params and a schema
 // - returns either an array of errors or false
 //
-module.exports = function validate(params, schema) {
+module.exports = function validate(params, schema, callback) {
 
   // spectactular fail for programmer error
-  if (!isObject(params)) {
-    throw Error('validate(params, schema): params not an object')
+  if (!isObject(params) || isFunction(params) || isArray(params)) {
+    throw Error('validate(params, schema): params is not an Object')
   }
 
   // spectactular fail for programmer error
-  if (!isObject(schema)) {
-    throw Error('validate(params, schema): schema not an object')
+  if (!isObject(schema) || isFunction(schema) || isArray(params)) {
+    throw Error('validate(params, schema): schema is not an Object')
+  }
+
+  // callback is optional
+  if (!isUndefined(callback) && !isFunction(callback)) {
+    throw Error('validate(params, schema, callback): callback is not a function')
   }
 
   // our best case scenario  
@@ -87,49 +94,38 @@ module.exports = function validate(params, schema) {
 
     // min
     if (prop.min && has(params, k) && rangesafe.indexOf(prop.type) > -1) {
-
-      // number we check the value directly
+      // Number: check the value directly
       var isNumAndUnderMin = isNumber(value) && value < prop.min
-      if (isNumAndUnderMin) {
-        errors.push(RangeError('below min ' + k + ' is ' + value + ' (min is ' + prop.min + ')'))
-      }
-
-      // string and array both respond to length!
+      // String & Array: both respond to length!
       var lengthUnderMin = (isString(value) || isArray(value)) && value.length < prop.min
-      if (lengthUnderMin) {
-        errors.push(RangeError('below min ' + k + ' is ' + value.length + '(min is ' + prop.min + ')'))
-      }
-
-      // custom min found on a valid custom type
+      // Custom min found on a valid custom type
       var isCustom = prop.type.min && !isError(prop.type(value)) && !prop.type.min(prop.min, value)
-      if (isCustom) {
-        errors.push(RangeError('below min ' + k + ' is ' + value + ' (min is ' + prop.min + ')'))
+      // anything goes!
+      if (isNumAndUnderMin || lengthUnderMin || isCustom) {
+        errors.push(RangeError(k + ' below min with value ' + value + ' (min is ' + prop.min + ')'))
       }
     }
 
     // max
     if (prop.max && has(params, k) && rangesafe.indexOf(prop.type) > -1) {
-
-      // number we check the value directly
+      // Number: check the value directly
       var isNumAndOverMax = isNumber(value) && value > prop.max
-      if (isNumAndOverMax) {
-        errors.push(RangeError('over max ' + k + ' is ' + value + ' (max is ' + prop.max + ')'))
-      }
-
-      // string and array both respond to length!
+      // String & Array: both respond to length
       var lengthOverMax = (isString(value) || isArray(value)) && value.length < prop.max
-      if (lengthOverMax) {
-        errors.push(RangeError('over max ' + k + ' is ' + value.length + '(max is ' + prop.max + ')'))
-      }
-
-      // custom min found on a valid custom type
+      // Custom max found on a valid custom type
       var isCustom = prop.type.max && !isError(prop.type(value)) && !prop.type.max(prop.max, value)
-      if (isCustom) {
-        errors.push(RangeError('over max ' + k + ' is ' + value + ' (max is ' + prop.max + ')'))
+      // anything goes
+      if (isNumAndOverMax || lengthOverMax || isCustom) {
+        errors.push(RangeError(k + ' over max with value ' + value + ' (max is ' + prop.max + ')'))
       }
     }
   })
  
+  // share the love
+  if (callback) {
+    callback(errors.length? errors : null, errors.length? null : params)
+  }
+
   // friendly return (empty arrays being truthy leads to fugly err first handling)
   return errors.length? errors : false
 }
