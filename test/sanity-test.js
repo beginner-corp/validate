@@ -37,3 +37,13 @@ test('optional callback fail', t=> {
     console.log(err, data)
   })
 })
+
+test('Function type check', t=> {
+  t.plan(1)
+  var schema = {
+    'callback': {type:Function}
+  }
+  var errors = validate({callback:'foo'}, schema)
+  t.equal(errors.length, 1, 'nope not a fn')
+  console.log(errors)
+})

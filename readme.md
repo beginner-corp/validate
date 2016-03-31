@@ -77,8 +77,9 @@ functon sum(params, callback) {
 
 `validate(params, schema)`
 
-- `params` a plain old javascript object that we assume came from JSON
-- `schema` a plain javascript object for describing the shape of the data
+- `params` a plain `Object` that we assume came from JSON
+- `schema` a plain `Object` for describing the shape of the data
+- `callback` (optional) Node style errback `function(err, params) {}`
 
 ## schema keys
 

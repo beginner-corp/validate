@@ -8,31 +8,35 @@ var isUndefined = require('lodash.isundefined')
 var isFunction  = require('lodash.isfunction')
 var has         = require('lodash.has')
 var property    = require('lodash.property')
-var aliases     = 'obj str num arr bool'.split(' ')
-var builtins    = [Object, String, Number, Array, Boolean]
+var aliases     = 'obj str num arr bool fun'.split(' ')
+var builtins    = [Object, String, Number, Array, Boolean, Function]
 var rangesafe   = [String, Number, Array]
 
 // built in types (thus all of JSON!)
 var types = { 
 
   obj: function obj(v) {
-    return isObject(v)? true : TypeError('not an object')
+    return isObject(v)? true : TypeError('not an Object')
   },
 
   str: function str(v) {
-    return isString(v)? true : TypeError('not a string')
+    return isString(v)? true : TypeError('not a String')
   },
 
   num: function num(v) {
-    return isNumber(v)? true : TypeError('not a number')
+    return isNumber(v)? true : TypeError('not a Number')
   },
 
   arr: function arr(v) {
-    return isArray(v)? true : TypeError('not an array')
+    return isArray(v)? true : TypeError('not an Array')
   },
 
   bool: function bool(v) {
-    return isBoolean(v)? true : TypeError('not a boolean')
+    return isBoolean(v)? true : TypeError('not a Boolean')
+  },
+
+  fun: function bool(v) {
+    return isFunction(v)? true : TypeError('not a Function')
   }
 }
 
