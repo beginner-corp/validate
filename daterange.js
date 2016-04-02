@@ -21,4 +21,3 @@ module.exports = function DateRange(v) {
 
   return exp.test(v)? true : Error('invalid DateRange')
 }
-
