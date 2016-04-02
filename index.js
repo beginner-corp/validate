@@ -8,6 +8,8 @@ var isUndefined = require('lodash.isundefined')
 var isFunction  = require('lodash.isfunction')
 var has         = require('lodash.has')
 var property    = require('lodash.property')
+
+// data structures
 var aliases     = 'obj str num arr bool fun'.split(' ')
 var builtins    = [Object, String, Number, Array, Boolean, Function]
 var rangesafe   = [String, Number, Array]
@@ -87,7 +89,7 @@ module.exports = function validate(params, schema, callback) {
       var err      = checker(value)
       // finally check the type
       if (isError(err)) {
-        errors.push(TypeError('invalid type ' + k + ' is ' + err.message))
+        errors.push(TypeError('invalid type ' + k + ' is an ' + err.message))
       }
     }
 

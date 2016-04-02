@@ -88,4 +88,41 @@ functon sum(params, callback) {
 - `min` any `Number` (or anything allowed by a custom type)
 - `max` any `Number` (or anything allowed by a custom type)
 
+## bundled custom types
+
+- `UUID`
+- `Email` 
+- `ISO`
+- `DateRange`
+
+Example usage of custom types:
+
+```javascript
+var validate = require('@smallwins/validate')
+var lambda = require('@smallwins/lambda')
+// pull in the custom types
+var UUID = require('@smallwins/validate/uuid')
+var Email = require('@smallwins/validate/email')
+var ISO = require('@smallwins/validate/iso')
+var DateRange = require('@smallwins/validate/daterange')
+
+// use the schema per builtins
+function valid(event, callback) {
+  var schema = {
+    'params.id': {required:true, type:UUID},
+    'body.email': {required:true, type:Email},
+    'body.created': {required:true, type:ISO},
+    'body.duration': {required:true, type:DateRange, min:'2016/01/01', max:'2017/01/01'}
+  }
+  validate(event, schema, callback)
+}
+
+function save(event, callback) {
+  // performs save
+  callback(null, event)
+}
+
+exports.handler = lambda(valid, save)
+```
+
 Check out the [examples](https://github.com/smallwins/validate-params-schema/tree/master/examples) for more on custom types and ranges (and the tests).
