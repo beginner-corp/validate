@@ -108,7 +108,11 @@ module.exports = function validate(params, schema, callback) {
       var isCustom = prop.type.min && !isError(prop.type(value)) && !prop.type.min(prop.min, value)
       // anything goes!
       if (isNumAndUnderMin || lengthUnderMin || isCustom) {
-        errors.push(RangeError(k + ' below min with value ' + value + ' (min is ' + prop.min + ')'))
+        var msg = ''
+        msg += k + ' over max with value '
+        msg += lengthUnderMin? value.length : value
+        msg += ' (min is ' + prop.min + ')'
+        errors.push(RangeError(msg))
       }
     }
 
@@ -117,12 +121,16 @@ module.exports = function validate(params, schema, callback) {
       // Number: check the value directly
       var isNumAndOverMax = isNumber(value) && value > prop.max
       // String & Array: both respond to length
-      var lengthOverMax = (isString(value) || isArray(value)) && value.length < prop.max
+      var lengthOverMax = (isString(value) || isArray(value)) && value.length > prop.max
       // Custom max found on a valid custom type
       var isCustom = prop.type.max && !isError(prop.type(value)) && !prop.type.max(prop.max, value)
       // anything goes
       if (isNumAndOverMax || lengthOverMax || isCustom) {
-        errors.push(RangeError(k + ' over max with value ' + value + ' (max is ' + prop.max + ')'))
+        var msg = ''
+        msg += k + ' over max with value '
+        msg += lengthOverMax? value.length : value
+        msg += ' (max is ' + prop.max + ')'
+        errors.push(RangeError(msg))
       }
     }
   })

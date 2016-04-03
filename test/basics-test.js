@@ -1,4 +1,5 @@
 var test = require('tape')
+var validate = require('../')
 var basics = require('../examples/basics')
 
 test('basics', t=> {
@@ -15,4 +16,19 @@ test('got error for wrong types', t=> {
     t.ok(err, 'got errors for empty params')
     console.log(err)
   })
+})
+
+test('max str', t=> {
+  t.plan(1)
+  var schema = {
+    maximal: {required:true, type:String, max:255}
+  }
+  var errors = validate({maximal:'lil'}, schema)
+  if (errors) {
+    t.fail(errors)
+    console.log(errors)
+  }
+  else {
+    t.ok(true, 'no errors')
+  }
 })

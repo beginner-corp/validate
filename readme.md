@@ -33,10 +33,11 @@ hi({name:{}}, console.log)
 
 - For testing an `Object` that presumably came from a JSON payload
 - Thusly, primarily concerned with JSON value types: `Object`, `String`, `Number`, `Array` and `Boolean`
-- Custom types are easily supported (see `./examples`)
+- Custom types are easily supported
+- Extra custom types bundled: `Email`, `ISO`, `DateRange` and `UUID`
 - Designed to test keys and nested keys
 - Optionally validate `required`
-- Optionally validate `min` and `max` for `String`, `Number` and `Array` builtin types (and easily implement for custom types)
+- Optionally validate `min` and `max` for `String`, `Number` and `Array` builtin types (and easily implement for custom types / see `DateRange` for an example)
 
 ### things it does not do
 
