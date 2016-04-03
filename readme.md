@@ -1,6 +1,6 @@
 [ ![Codeship Status for smallwins/validate](https://codeship.com/projects/e0e990b0-d826-0133-2fa3-6a1daaefbd5c/status?branch=master)](https://codeship.com/projects/143153)
 
-# @smallwins/validate
+## :raised_hands::seedling: @smallwins/validate
 
 Parameter validation for builtins and custom types. Accepts `params` and a `schema` and returns an array of `Error`s or `false`.
 
@@ -29,7 +29,7 @@ hi({name:{first:'brian', last:'leroux'}}, console.log)
 hi({name:{}}, console.log)
 ```
 
-### considerations
+### :dizzy: considerations
 
 - For testing an `Object` that presumably came from a JSON payload
 - Thusly, primarily concerned with JSON value types: `Object`, `String`, `Number`, `Array` and `Boolean`
@@ -39,13 +39,13 @@ hi({name:{}}, console.log)
 - Optionally validate `required`
 - Optionally validate `min` and `max` for `String`, `Number` and `Array` builtin types (and easily implement for custom types / see `DateRange` for an example)
 
-### things it does not do
+### things it does not do :thumbsdown:
 
 - Mutate things with: serialization, formatting or defaults
 - Nested subtypes (eg. the things in an array)
 - Localized error messages
 
-## further justifications
+## :punch::two_hearts: further justifications
 
 There are a tonne of libraries that do things like this but also do a whole lot more. This library deliberately limits its scope: 
 
@@ -53,7 +53,7 @@ There are a tonne of libraries that do things like this but also do a whole lot 
 - Work primarily with builtins but easily extend
 - Provide a nice API for usage (hence returning false instead of a truthy empty array for the return value of validate)
 
-## another example usage
+## another example :point_left::eyes::point_left:
 
 ```javascript
 var validate = require('@smallwins/validate')
@@ -74,7 +74,7 @@ functon sum(params, callback) {
 }
 ```
 
-## api
+## :love_letter: api :thought_balloon::star2:
 
 `validate(params, schema)`
 
@@ -82,14 +82,14 @@ functon sum(params, callback) {
 - `schema` a plain `Object` for describing the shape of the data
 - `callback` (optional) Node style errback `function(err, params) {}`
 
-## schema keys
+#### :key: schema
 
 - `required` either `true` or `false` (or leave it out completely)
 - `type` can be one of `Object`, `String`, `Number`, `Array` and `Boolean`
 - `min` any `Number` (or anything allowed by a custom type)
 - `max` any `Number` (or anything allowed by a custom type)
 
-## bundled custom types
+#### :package: bundled custom types
 
 - `UUID`
 - `Email` 
