@@ -53,25 +53,28 @@ There are a tonne of libraries that do things like this but also do a whole lot 
 - Work primarily with builtins but easily extend
 - Provide a nice API for usage (hence returning false instead of a truthy empty array for the return value of validate)
 
-#### another example :point_left::eyes::point_left:
+#### terse style example :point_left::eyes::point_left:
 
 ```javascript
 var validate = require('@smallwins/validate')
 
-functon sum(params, callback) {
+function sum(params, callback) {
   // define our assumed params
   var errors = validate(params, {
     x: {required:true, type:Number},
     y: {required:true, type:Number}
   })
-  // err first!
-  if (errors) {
-    callback(errors)
-  }
-  else {
-    callback(null, params.x + params.y)
-  }
+  // err first! it'll be null w/ good input
+  callback(errors, errors? null : params.x + params.y)
 }
+
+sum({}, console.log)
+// logs
+// [[ReferenceError: missing required param x], [ReferenceError: missing required param y]] null
+
+sum({x:1, y:2}, console.log)
+// logs
+// null 2
 ```
 
 ## :love_letter: api :thought_balloon::star2:
