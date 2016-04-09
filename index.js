@@ -141,5 +141,5 @@ module.exports = function validate(params, schema, callback) {
   }
 
   // friendly return (empty arrays being truthy leads to fugly err first handling)
-  return errors.length? errors : false
+  return errors.length? errors : null
 }
