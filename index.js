@@ -109,7 +109,7 @@ module.exports = function validate(params, schema, callback) {
       // anything goes!
       if (isNumAndUnderMin || lengthUnderMin || isCustom) {
         var msg = ''
-        msg += k + ' over max with value '
+        msg += k + ' under min with value '
         msg += lengthUnderMin? value.length : value
         msg += ' (min is ' + prop.min + ')'
         errors.push(RangeError(msg))
