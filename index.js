@@ -1,7 +1,7 @@
 var isObject    = require('lodash.isobject')
 var isString    = require('lodash.isstring')
 var isNumber    = require('lodash.isnumber')
-var isArray     = require('lodash.isarray')
+var isArray     = Array.isArray
 var isBoolean   = require('lodash.isboolean')
 var isError     = require('lodash.iserror')
 var isUndefined = require('lodash.isundefined')
@@ -15,7 +15,7 @@ var builtins    = [Object, String, Number, Array, Boolean, Function]
 var rangesafe   = [String, Number, Array]
 
 // built in types (thus all of JSON!)
-var types = { 
+var types = {
 
   obj: function obj(v) {
     return isObject(v)? true : TypeError('not an Object')
@@ -43,7 +43,7 @@ var types = {
 }
 
 //
-// validate 
+// validate
 //
 // - requires params and a schema
 // - returns either an array of errors or false
@@ -65,9 +65,9 @@ module.exports = function validate(params, schema, callback) {
     throw Error('validate(params, schema, callback): callback is not a function')
   }
 
-  // our best case scenario  
+  // our best case scenario
   var errors = []
-  
+
   // walk each property key
   Object.keys(schema).forEach(function(k) {
 
@@ -134,7 +134,7 @@ module.exports = function validate(params, schema, callback) {
       }
     }
   })
- 
+
   // share the love
   if (callback) {
     callback(errors.length? errors : null, errors.length? null : params)

@@ -1,9 +1,10 @@
 {
   "name": "@smallwins/validate",
   "version": "4.0.2",
-  "main": "index",
+  "main": "bundle",
   "scripts": {
-    "test": "tape test/**-test.js | tap-spec"
+    "test": "tape test/**-test.js | tap-spec",
+    "build": "browserify index.js --standalone validate --node | uglifyjs -c > bundle.js"
   },
   "keywords": [
     "params",
@@ -16,9 +17,10 @@
   "author": "Brian LeRoux <b@brian.io>",
   "license": "Apache-2",
   "dependencies": {
-    "is-uuid": "^1.0.2",
+    "tape": "^4.6.2"
+  },
+  "devDependencies": {
     "lodash.has": "^4.2.1",
-    "lodash.isarray": "^4.0.0",
     "lodash.isboolean": "^3.0.3",
     "lodash.iserror": "^3.1.1",
     "lodash.isfunction": "^3.0.8",
@@ -27,9 +29,7 @@
     "lodash.isstring": "^4.0.1",
     "lodash.isundefined": "^3.0.1",
     "lodash.property": "^4.1.2",
-    "serialize-error": "^2.0.0"
-  },
-  "devDependencies": {
+    "serialize-error": "^2.0.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.5.1"
   }
