@@ -19,6 +19,7 @@
   "license": "Apache-2",
   "dependencies": {},
   "devDependencies": {
+    "browserify": "^13.1.1",
     "lodash.has": "^4.2.1",
     "lodash.isboolean": "^3.0.3",
     "lodash.iserror": "^3.1.1",
@@ -30,6 +31,7 @@
     "lodash.property": "^4.1.2",
     "serialize-error": "^2.0.0",
     "tap-spec": "^4.1.1",
-    "tape": "^4.5.1"
+    "tape": "^4.5.1",
+    "uglifyjs": "^2.4.10"
   }
 }
