@@ -4,7 +4,8 @@
   "main": "bundle",
   "scripts": {
     "test": "tape test/**-test.js | tap-spec",
-    "build": "browserify index.js --standalone validate --node | uglifyjs -c > bundle.js"
+    "build": "browserify index.js --standalone validate --node | uglifyjs -c > bundle.js",
+    "prepublish":"npm run build"
   },
   "keywords": [
     "params",
@@ -17,7 +18,6 @@
   "author": "Brian LeRoux <b@brian.io>",
   "license": "Apache-2",
   "dependencies": {
-    "tape": "^4.6.2"
   },
   "devDependencies": {
     "lodash.has": "^4.2.1",
