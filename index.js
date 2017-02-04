@@ -8,8 +8,9 @@ var isError     = nodash.isError
 var isUndefined = nodash.isUndefined
 var isFunction  = nodash.isFunction
 var has         = nodash.has
-var property    = has.property
+var property    = nodash.property
 var types       = require('./_types')
+var invalidType = require('./_invalid-type')
 //
 // validate
 //
@@ -64,6 +65,8 @@ module.exports = function validate(params, schema, callback) {
     var builtins = [Object, String, Number, Array, Boolean, Function]
     var index = builtins.indexOf(prop.type)
     var notfound = index === -1
+    var value = property(k)(params)
+     
     if (notfound && (prop.type.min || prop.type.max)) {
       rangesafe.push(prop.type)
     }
