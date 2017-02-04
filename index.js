@@ -61,6 +61,9 @@ module.exports = function validate(params, schema, callback) {
     }
 
     // add custom type to rangesafe if min or max is expected
+    var builtins = [Object, String, Number, Array, Boolean, Function]
+    var index = builtins.indexOf(prop.type)
+    var notfound = index === -1
     if (notfound && (prop.type.min || prop.type.max)) {
       rangesafe.push(prop.type)
     }
