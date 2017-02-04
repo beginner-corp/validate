@@ -1,5 +1,3 @@
-node_modules/
 examples/
 test/
 .gitignore
-index.js
