@@ -1,6 +1,6 @@
 {
   "name": "@smallwins/validate",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "main": "bundle",
   "scripts": {
     "test": "tape test/**-test.js | tap-spec"
