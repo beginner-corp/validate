@@ -1,49 +1,18 @@
-var isObject    = require('lodash.isobject')
-var isString    = require('lodash.isstring')
-var isNumber    = require('lodash.isnumber')
-var isArray     = require('lodash.isarray')
-var isBoolean   = require('lodash.isboolean')
-var isError     = require('lodash.iserror')
-var isUndefined = require('lodash.isundefined')
-var isFunction  = require('lodash.isfunction')
-var has         = require('lodash.has')
-var property    = require('lodash.property')
-
-// data structures
-var aliases     = 'obj str num arr bool fun'.split(' ')
-var builtins    = [Object, String, Number, Array, Boolean, Function]
-var rangesafe   = [String, Number, Array]
-
-// built in types (thus all of JSON!)
-var types = { 
-
-  obj: function obj(v) {
-    return isObject(v)? true : TypeError('not an Object')
-  },
-
-  str: function str(v) {
-    return isString(v)? true : TypeError('not a String')
-  },
-
-  num: function num(v) {
-    return isNumber(v)? true : TypeError('not a Number')
-  },
-
-  arr: function arr(v) {
-    return isArray(v)? true : TypeError('not an Array')
-  },
-
-  bool: function bool(v) {
-    return isBoolean(v)? true : TypeError('not a Boolean')
-  },
-
-  fun: function bool(v) {
-    return isFunction(v)? true : TypeError('not a Function')
-  }
-}
-
+var nodash      = require('@smallwins/nodash')
+var isObject    = nodash.isObject
+var isString    = nodash.isString
+var isNumber    = nodash.isNumber
+var isArray     = Array.isArray
+var isBoolean   = nodash.isBoolean
+var isError     = nodash.isError
+var isUndefined = nodash.isUndefined
+var isFunction  = nodash.isFunction
+var has         = nodash.has
+var property    = nodash.property
+var types       = require('./_types')
+var invalidType = require('./_invalid-type')
 //
-// validate 
+// validate
 //
 // - requires params and a schema
 // - returns either an array of errors or false
@@ -65,9 +34,12 @@ module.exports = function validate(params, schema, callback) {
     throw Error('validate(params, schema, callback): callback is not a function')
   }
 
-  // our best case scenario  
+  // our best case scenario
   var errors = []
-  
+
+  // data structures
+  var rangesafe = [String, Number, Array]
+
   // walk each property key
   Object.keys(schema).forEach(function(k) {
 
@@ -81,19 +53,20 @@ module.exports = function validate(params, schema, callback) {
 
     // type checker! only validating a type if params has the key
     if (prop.type && has(params, k)) {
-      // do a bunch of work to find a possible err
-      var index    = builtins.indexOf(prop.type)
-      var notfound = index === -1
-      var checker  = notfound? prop.type : types[aliases[index]]
-      var value    = property(k)(params)
-      var err      = checker(value)
-      // finally check the type
+      var tmpSchema = {}
+      tmpSchema[k] = prop.type
+      var err = invalidType(k, params, tmpSchema)
       if (isError(err)) {
         errors.push(TypeError('invalid type ' + k + ' is an ' + err.message))
       }
     }
 
     // add custom type to rangesafe if min or max is expected
+    var builtins = [Object, String, Number, Array, Boolean, Function]
+    var index = builtins.indexOf(prop.type)
+    var notfound = index === -1
+    var value = property(k)(params)
+     
     if (notfound && (prop.type.min || prop.type.max)) {
       rangesafe.push(prop.type)
     }
@@ -134,7 +107,7 @@ module.exports = function validate(params, schema, callback) {
       }
     }
   })
- 
+
   // share the love
   if (callback) {
     callback(errors.length? errors : null, errors.length? null : params)

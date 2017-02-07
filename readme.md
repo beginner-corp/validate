@@ -51,7 +51,7 @@ There are a tonne of libraries that do things like this but also do a whole lot 
 
 - Make errback style param contract validation super clean and simple
 - Work primarily with builtins but easily extend
-- Provide a nice API for usage (hence returning false instead of a truthy empty array for the return value of validate)
+- Provide a nice API for usage (hence returning a falsy `null` instead of a truthy empty array `[]` for the return value of `validate` and making the schema type validation minimalist without sacrificing capability.)
 
 #### terse style example :point_left::eyes::point_left:
 
