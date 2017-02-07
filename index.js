@@ -66,8 +66,8 @@ module.exports = function validate(params, schema, callback) {
     var index = builtins.indexOf(prop.type)
     var notfound = index === -1
     var value = property(k)(params)
-     
-    if (notfound && (prop.type.min || prop.type.max)) {
+
+    if (prop.type && notfound && (prop.type.min || prop.type.max)) {
       rangesafe.push(prop.type)
     }
 
