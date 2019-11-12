@@ -19,10 +19,10 @@
     "@smallwins/nodash": "^1.0.0"
   },
   "devDependencies": {
-    "browserify": "^13.1.1",
-    "serialize-error": "^2.0.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.5.1",
-    "uglifyjs": "^2.4.10"
+    "browserify": "^16.5.0",
+    "serialize-error": "^5.0.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.11.0",
+    "uglifyjs": "^2.4.11"
   }
 }
