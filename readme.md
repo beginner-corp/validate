@@ -1,6 +1,6 @@
-[ ![Codeship Status for smallwins/validate](https://codeship.com/projects/e0e990b0-d826-0133-2fa3-6a1daaefbd5c/status?branch=master)](https://codeship.com/projects/143153)
+# [@smallwins/validate](https://www.npmjs.com/package/@smallwins/validate)
 
-#### :raised_hands::seedling: @smallwins/validate :ok_hand::bow:
+[![GitHub CI status](https://github.com/smallwins/validate/workflows/Node%20CI/badge.svg)](https://github.com/smallwins/validate/actions?query=workflow%3A%22Node+CI%22)
 
 Parameter validation for builtins and custom types. Accepts `params` and a `schema` and returns an array of `Error`s or `false`.
 
@@ -13,7 +13,7 @@ function hi(params, callback) {
     'name.first': {required:true,  type:String},
     'name.last':  {required:false, type:String}
   }
-  var errors = validate(params, schema) 
+  var errors = validate(params, schema)
   if (errors) {
     callback(errors)
   }
@@ -25,7 +25,7 @@ function hi(params, callback) {
 // logs: null, hi brian
 hi({name:{first:'brian', last:'leroux'}}, console.log)
 
-// logs: [ [ReferenceError: missing required param name.first] ] 
+// logs: [ [ReferenceError: missing required param name.first] ]
 hi({name:{}}, console.log)
 ```
 
@@ -47,7 +47,7 @@ hi({name:{}}, console.log)
 
 #### :punch::two_hearts: further justifications
 
-There are a tonne of libraries that do things like this but also do a whole lot more. This library deliberately limits its scope: 
+There are a tonne of libraries that do things like this but also do a whole lot more. This library deliberately limits its scope:
 
 - Make errback style param contract validation super clean and simple
 - Work primarily with builtins but easily extend
@@ -95,7 +95,7 @@ sum({x:1, y:2}, console.log)
 #### :package: bundled custom types
 
 - `UUID`
-- `Email` 
+- `Email`
 - `ISO`
 - `DateRange`
 
