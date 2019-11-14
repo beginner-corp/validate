@@ -22,7 +22,6 @@ jobs:
         echo "Git ref:        ${{ github.ref }}"
         echo "GH actor:       ${{ github.actor }}"
         echo "SHA:            ${{ github.sha }}"
-        echo "Job container:  ${{ job.container.id }}"
 
     - name: Check out repo
       uses: actions/checkout@v1
@@ -96,3 +95,18 @@ jobs:
       #   run: npm publish
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Post notifications to Slack
+  notify:
+    steps:
+      - name: Success
+        if: success()
+        run: echo Success!
+
+      - name: Failure
+        if: failure()
+        run: echo Failure!
+
+      - name: Cancelled
+        if: cancelled()
+        run: echo Cancelled!
