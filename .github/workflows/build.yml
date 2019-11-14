@@ -16,6 +16,12 @@ jobs:
 
     # Go
     steps:
+    - name: Env
+      run: |
+        echo "Event name::    ${{ github.event_name }}"
+        echo "Git ref::       ${{ github.ref }}"
+        echo "Job container:: ${{ job.container.id }}"
+
     - name: Check out repo
       uses: actions/checkout@v1
 
