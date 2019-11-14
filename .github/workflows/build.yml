@@ -42,8 +42,9 @@ jobs:
       run: npm test
 
     - name: Testing state
-      if: failure() || success() || cancelled()
-      run: echo "Status: ${{ job.status }}"
+      if: always()
+      run: |
+        echo "Status: ${{ job.status }}"
 
 
   # ----- Only git tag testing + package publishing beyond this point ----- #
