@@ -98,6 +98,10 @@ jobs:
 
   # Post notifications to Slack
   notify:
+    # Setup
+    runs-on: ubuntu-latest
+
+    # Go
     steps:
       - name: Success
         if: success()
