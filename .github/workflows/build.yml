@@ -46,7 +46,7 @@ jobs:
     - name: Slack Notification
       uses: homoluctus/slatify@master
       # Only fire alert once
-      if: github.ref == 'refs/heads/master' && failure() && matrix.node-version == 10.x && matrix.os == ubuntu-latest
+      if: github.ref == 'refs/heads/master' && failure() && matrix.node-version == '10.x' && matrix.os == 'ubuntu-latest'
       with:
         type: ${{ job.status }}
         job_name: '*Build*'
