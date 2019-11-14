@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
-        os: [windows-latest, ubuntu-latest, macOS-latest]
+        node-version: [10.x] # [10.x, 12.x]
+        # os: [windows-latest, ubuntu-latest, macOS-latest]
 
     # Go
     steps:
     - name: Env
       run: |
-        echo "Event name:     ${{ github.event_name }}"
-        echo "Git ref:        ${{ github.ref }}"
-        echo "GH actor:       ${{ github.actor }}"
-        echo "SHA:            ${{ github.sha }}"
+        echo "Event name: ${{ github.event_name }}"
+        echo "Git ref:    ${{ github.ref }}"
+        echo "GH actor:   ${{ github.actor }}"
+        echo "SHA:        ${{ github.sha }}"
 
     - name: Check out repo
       uses: actions/checkout@v1
@@ -39,6 +39,15 @@ jobs:
 
     - name: Test
       run: npm test
+
+    - name: Testing success
+      if: job.status == 'success'
+      run: echo Success!
+
+    - name: Testing failure
+      if: job.status == 'failure'
+      run: echo Failure!
+
 
   # ----- Only git tag testing + package publishing beyond this point ----- #
 
@@ -96,21 +105,21 @@ jobs:
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Post notifications to Slack
-  notify:
-    # Setup
-    runs-on: ubuntu-latest
+  # # Post notifications to Slack
+  # notify:
+  #   # Setup
+  #   runs-on: ubuntu-latest
 
-    # Go
-    steps:
-      - name: Success
-        if: success()
-        run: echo Success!
+  #   # Go
+  #   steps:
+  #     - name: Success
+  #       if: success()
+  #       run: echo Success!
 
-      - name: Failure
-        if: failure()
-        run: echo Failure!
+  #     - name: Failure
+  #       if: failure()
+  #       run: echo Failure!
 
-      - name: Cancelled
-        if: cancelled()
-        run: echo Cancelled!
+  #     - name: Cancelled
+  #       if: cancelled()
+  #       run: echo Cancelled!
