@@ -41,10 +41,17 @@ jobs:
     - name: Test
       run: npm test
 
-    - name: Testing state
+    # - name: Testing state
+    #   if: always()
+    #   run: |
+    #     echo "Status: ${{ job.status }}"
+    - name: Slack Notification
+      uses: homoluctus/slatify@master
       if: always()
-      run: |
-        echo "Status: ${{ job.status }}"
+      with:
+        type: ${{ job.status }}
+        job_name: '*Build*'
+        url: ${{ secrets.SLACK_WEBHOOK }}
 
 
   # ----- Only git tag testing + package publishing beyond this point ----- #
