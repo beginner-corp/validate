@@ -23,7 +23,7 @@
     "browserify": "^16.5.0",
     "serialize-error": "^5.0.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.13.0",
+    "tape": "^4.13.2",
     "uglifyjs": "^2.4.11"
   }
 }
