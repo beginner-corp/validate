@@ -15,7 +15,7 @@
     "contract"
   ],
   "author": "Brian LeRoux <b@brian.io>",
-  "license": "Apache-2",
+  "license": "Apache-2.0",
   "dependencies": {
     "@smallwins/nodash": "^1.0.0"
   },
